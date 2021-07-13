@@ -80,7 +80,7 @@ def main(argv):
 
     print("Prosseserer...")
 
-    found_rows = pd.Series()
+    found_rows = pd.Series(dtype = 'str')
 
     if insert_col == -1:
         input_dfs = input_dfs.reindex(input_dfs.columns.tolist() + search_dfs.columns.tolist(), axis=1)
@@ -89,11 +89,11 @@ def main(argv):
 
     if search_col == -1:
         for index, keyword in enumerate(search_dfs.iloc[:,0]):
-            current_found_rows = pd.Series()
+            current_found_rows = pd.Series(dtype = 'str')
             for column in input_dfs:
                 if(input_dfs[column].dropna().empty):
                     continue
-                current_found_rows = current_found_rows | input_dfs[column].str.contains(keyword, na=False, regex=False)
+                current_found_rows = current_found_rows | input_dfs[column].str.contains(str(keyword), na=False, regex=False)
             if insert_col == -1:
                 for cell_index, cell_value in enumerate(search_dfs.iloc[:index,]):
                     for true_index in input_dfs.index[current_found_rows]:
@@ -105,8 +105,8 @@ def main(argv):
         
     else:
         for index, keyword in enumerate(search_dfs.iloc[:,0]):
-            current_found_rows = pd.Series()
-            current_found_rows = input_dfs.iloc[:,search_col].str.contains(keyword, na=False, regex=False)
+            current_found_rows = pd.Series(dtype = 'str')
+            current_found_rows = input_dfs.iloc[:,search_col].str.contains(str(keyword), na=False, regex=False)
             if insert_col == -1:
                 for cell_index, cell_value in enumerate(search_dfs.iloc[:index,]):
                     for true_index in input_dfs.index[current_found_rows]:
